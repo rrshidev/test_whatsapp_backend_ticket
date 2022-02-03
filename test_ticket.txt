@@ -1,0 +1,78 @@
+1. Выделяем чат:
+
+Запрос:
+
+curl --location --request GET 'https://dev.wapp.im/v3/chat/spare?crm=TEST&domain=test' \
+--header 'X-Tasktest-Token: f62cdf1e83bc324ba23aee3b113c6249'
+
+ответ:
+
+{"id":5,"instanceId":"2a01:4f8:c17:ac8:3::6","token":"rozyIyfH5mMDzlyP","chat_id":"2a01:4f8:c17:ac8:3::6","md":0,"chat_token":"rozyIyfH5mMDzlyP","chat_key":"b3ac161e8eae8240efe0f461c9119405","apikey":"b3ac161e8eae8240efe0f461c9119405","date_add":1643826571,"date_trial":null,"date_pay":0,"date_subscription":0,"phone":"","name":"","platform":"","status":0,"is_premium":0}
+
+Записываем данные в базу.
+
+Запрос:
+
+CREATE TABLE data_chat
+(id VARCHAR(30),
+instanceId VARCHAR(30),
+token VARCHAR(30), 
+chat_id VARCHAR(30), 
+md VARCHAR(30));
+
+INSERT INTO TABLE data_chat(id, instanceId, token, chat_id, md) 
+VALUES(5, 2a01:4f8:c17:ac8:3::6, rozyIyfH5mMDzlyP, 2a01:4f8:c17:ac8:3::6, 0);
+
+
+
+2. Статус:
+
+Запрос
+
+curl --location --request GET 'https://dev.wapp.im/v3/instance5/status?full=1&token=rozyIyfH5mMDzlyP' \
+--header 'X-Tasktest-Token: f62cdf1e83bc324ba23aee3b113c6249'
+
+Ответ:
+
+{"qrCode":"data:image/png;base64,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","state":"got qr code","accountStatus":"got qr code","statusData":[]}
+
+Декодируем в png на base64.guru
+
+3. Линкуемся чз приложение по куар коду
+
+Получен статус: что устройство подключено:
+Некое устройство на МакОс на Гугл Хроме
+
+4. Отправка сообщения супруге:
+
+curl --location --request POST 'https://dev.wapp.im/v3/instance5/sendMessage?token=rozyIyfH5mMDzlyP' \
+--header 'X-Tasktest-Token: f62cdf1e83bc324ba23aee3b113c6249' \
+--form 'phone="79003712667"' \
+--form 'body="Pupsevich privet iz-za zerkaliya whatsapp"' \
+--form 'quotedMsgId=""' \
+--form 'sendSeen="1"' \
+--form 'typeMsg="text"' \
+--form 'title="Название "' \
+--form 'footer="Подвал"'
+
+
+Ответ:
+
+{"sent":true,"id":"true_79003712667@c.us_70A5C619AE68BB651C96DF2CA81DC9B4","msg":{"id":{"fromMe":true,"remote":{"server":"c.us","user":"79003712667","_serialized":"79003712667@c.us"},"id":"70A5C619AE68BB651C96DF2CA81DC9B4","_serialized":"true_79003712667@c.us_70A5C619AE68BB651C96DF2CA81DC9B4"},"ack":0,"hasMedia":false,"body":"Pupsevich privet iz-za zerkaliya whatsapp","type":"chat","timestamp":1643829292,"from":"79532863360@c.us","to":"79003712667@c.us","deviceType":"android","isForwarded":false,"forwardingScore":0,"isStarred":false,"fromMe":true,"hasQuotedMsg":false,"vCards":[],"mentionedIds":[],"isGif":false}}
+
+Сообщение пришло как бы от моего контакта. Всё чётко. Парни, берите меня! =)
+
+5. Удаление чата
+
+Запрос: 
+
+curl --location --request GET 'https://dev.whatsapp.sipteco.ru/v3/instance5/removeChat?token=rozyIyfH5mMDzlyP&phone&chatId \
+--header 'X-Tasktest-Token: f62cdf1e83bc324ba23aee3b113c6249'
+
+Ответ:
+
+
+
+
+
+
